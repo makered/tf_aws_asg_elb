@@ -8,7 +8,6 @@ This module makes the following assumptions:
 * You can fully bootstrap your instances using an AMI + user_data
 * *You want to associate the ASG with an ELB*
 * Your instances behind the ELB will be in a VPC
-* Your using a single Security Group for all instances in the ASG
 
 Input Variables
 ---------------
@@ -21,8 +20,8 @@ Input Variables
    E.g. arn:aws:iam::XXXXXXXXXXXX:instance-profile/my-instance-profile
 - `key_name` - The SSH key name (uploaded to EC2) instances should
    be populated with.
-- `security_group` - The Security Group ID that instances in the ASG
-    - This is usually set to resolve to a security group you make in the
+- `security_groups` - Security Group ID(s) that instances in the ASG
+    - This is usually set to resolve to security group(s) you make in the
       same template as this module, e.g. "${module.sg_web.security_group_id_web}"
     - It needs to be customized based on the name of your module resource.
    should use.
@@ -71,11 +70,11 @@ module "my_autoscaling_group" {
   iam_instance_profile = "${var.iam_instance_profile}"
   key_name = "${var.key_name}"
 
-  //Using a reference to an SG we create in the same template.
-  // - It needs to be customized based on the name of your module resource
+  //Using a reference to an SG(s) we create in the same template.
+  // - Need to be customized based on the name of your module resource
   // - It is recommended that you use https://github.com/terraform-community-modules/tf_aws_sg/tree/master/sg_https_only
-  //   for the SG
-  security_group = "${module.sg_https_only.security_group_id_web}"
+  //   for the SG(s)
+  security_groups = "${module.sg_https_only.security_group_id_web}"
 
   user_data = "${var.user_data}"
   asg_name = "${var.asg_name}"
@@ -107,7 +106,7 @@ module "my_autoscaling_group" {
 - instance_type
 - iam_instance_profile
 - key_name
-- security_group
+- security_groups
 - user_data
 - asg_name
 - asg_number_of_instances.

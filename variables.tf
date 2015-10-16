@@ -12,7 +12,9 @@ variable "instance_type" {}
 variable "iam_instance_profile" {}
 variable "key_name" {}
 
-variable "security_group" {}
+variable "security_groups" {
+  description = "A comma-separated list of security groups to associate with ASG instances"
+}
 
 variable "user_data" {
   description = "The path to a file with user_data for the instances"
